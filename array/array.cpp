@@ -132,11 +132,29 @@ inline void TArray<T>::remove(int index) {
     else { cout << "wrong index" << endl; }
 }
 
+//обращение к элементу массива
+template<typename T>
+inline const T& TArray<T>::operator[](int index) const {
+    if (index >= 0 || index < _size) {
+        return *(_data + index);
+    }
+    else { cout << "wrong index" << endl; }
+
+}
+template<typename T>
+inline T& TArray<T>::operator[](int index) {
+    if (index >= 0 || index < _size) {
+        return *(_data + index);
+    }
+    else { cout << "wrong index" << endl; }
+}
+
+//количество элементов
 template<typename T>
 inline int TArray<T>::size() const {
-    /*this->value;
-    return sizeof(value);*/
+    return _size;
 }
+
 
 
 int main()
