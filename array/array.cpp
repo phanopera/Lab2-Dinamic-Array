@@ -1,4 +1,4 @@
-﻿// array.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+// array.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 #pragma once
 #include <iostream>
@@ -35,6 +35,7 @@ public:
 private:
 
     const int capacityDefault = 8; //или 16
+    const int capacityAdding = 2; //или 16
 
     T* _data;
     int _size;
@@ -57,6 +58,7 @@ inline TArray<T>::TArray(int capacity) {
     
 }
 
+//деструктор
 template<typename T>
 inline TArray<T>::~TArray() {
     for (int i = 0; i < _size; ++i) {
@@ -65,22 +67,71 @@ inline TArray<T>::~TArray() {
     free(_data); //освобождение памяти
 }
 
+//выделение памяти, вставка
 template<typename T>
 inline int TArray<T>::insert(const T& value) {
-    if ();
+    if (_size == _capacity) { 
+        _capacity = _capacity * capacityAdding;//увечичение веса ради вместимости
+        T* newData = (T*)malloc(sizeof(T*) * _capacity); //выделение памяти под временный массив, узнав размер массива 
+        for (int i = 0; i < _size; i++) {
+            new (newData + i) T(std::move(_data[i])); //вызывается конструктор, копирующмй элементы
+        }
+        for (int i = 0; i < _size; i++) {
+            dataT[i].~T(); 
+        }
+        free(_data);
+        _data = newData;
+        delete(newData);
+        newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
+    }
+    new (data_ + size_) T(value); //вызывается конструктор по умолчанию
+        _size++;
+        return _size - 1;
 }
+//выделение памяти, вставка в место
 template<typename T>
 inline int TArray<T>::insert(int index, const T& value) {
     if (index >= 0 && index < _size) {
-
+        if (_size == _capacity) {
+            _capacity = _capacity * capacityAdding;//увечичение веса ради вместимости
+            T* newData = (T*)malloc(sizeof(T*) * _capacity); //выделение памяти под временный массив, узнав размер массива 
+            for (int i = 0; i < _size; i++) {
+                new (newData + i) T(std::move(_data[i])); //вызывается конструктор, копирующмй элементы
+            }
+            for (int i = 0; i < _size; i++) {
+                dataT[i].~T();
+            }
+            free(_data);
+            _data = newData;
+            delete(newData);
+            newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
+        }
+        _size++;
+        for (int i = _size-1; i > index; i--) {//перенос объектов до index
+            new (_data + i) T(std::move(_data[i-1])); //вызывается конструктор, копирующмй элементы
+            dataT[i-1].~T();
+        }
+        new(_data + index) T(value);
+        return index;
     }
     else return -1;
 }
 
+//удаление элемента
 template<typename T>
 inline void TArray<T>::remove(int index) {
+    if (index >= 0 || index < _size) {
+        _data[index].~T();
 
+        for (int i = index; i < _size-1; i++) {//перенос объектов от index
+            _data[i].~T();
+            new (_data + i) T(std::move(_data[i + 1])); //вызывается конструктор, копирующмй элементы   
+        }
+        _size--;
+    }
+    else { cout << "wrong index" << endl; }
 }
+
 template<typename T>
 inline int TArray<T>::size() const {
     /*this->value;
