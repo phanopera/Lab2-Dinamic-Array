@@ -10,13 +10,12 @@ class TArray final{
     class Iterator {
        // iterator();
        // reverseIterator();
-    }
+    };
     class ConstIterator:public Iterator {
      //  iterator() const;
       //  reverseIterator() const;
-    }
+    };
 public:
-    T *_data;
     TArray();
     TArray(int capacity);
 
