@@ -16,7 +16,7 @@ class TArray final{
       //  reverseIterator() const;
     }
 public:
-    T *data;
+    T *_data;
     TArray();
     TArray(int capacity);
 
