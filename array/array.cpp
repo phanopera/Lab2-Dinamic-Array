@@ -93,7 +93,7 @@ inline TArray<T>::TArray(int capacity) {
 //деструктор
 template<typename T>
 inline TArray<T>::~TArray() {
-    for (int i = 0; i < _size; ++i) {
+    for (int i = 0; i < _size; i++) {
         _data[i].~T();  //удаление элементов
     }
     free(_data); //освобождение памяти
@@ -113,7 +113,7 @@ inline int TArray<T>::insert(const T& value) {
         }
         free(_data);
         _data = newData;
-        delete(newData);
+       // delete(newData);
         newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
     }
     new (_data + _size) T(value); //вызывается конструктор по умолчанию
@@ -135,7 +135,7 @@ inline int TArray<T>::insert(int index, const T& value) {
             }
             free(_data);
             _data = newData;
-            delete(newData);
+           // delete(newData);
             newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
         }
         _size++;
@@ -232,7 +232,7 @@ inline bool TArray<T>::Iterator::hasNext() const {
     }
     else
     {
-        if (_current == _start - _mas->_size) {
+        if (_current == _mas->_size+_start) {
             return false;
         }
         else {
@@ -248,12 +248,12 @@ int main()
     for (int i = 0; i < 10; ++i) {
         a.insert(i + 1);
     }
-   /* for (int i = 0; i < a.size(); ++i) {
+   for (int i = 0; i < a.size(); ++i) {
         a[i] *= 2;
-    }*/
-   /* for (auto it = a.iterator(); it.hasNext(); it.next()) {
+    }
+    for (auto it = a.iterator(); it.hasNext(); it.next()) {
         std::cout << it.get() << std::endl;
-    }*/
+    }
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
