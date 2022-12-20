@@ -31,7 +31,7 @@ class TArray final{
        
 
     };
-    class ConstIterator :public Iterator {
+    class ConstIterator {
     protected:
         T* _start;
         T* _current;
