@@ -32,6 +32,11 @@ class TArray final{
 
     };
     class ConstIterator :public Iterator {
+    protected:
+        T* _start;
+        T* _current;
+        TArray<T>* _mas;
+        bool isReverces;
     public:
         ConstIterator(TArray<T>* mas, T* start, bool isReverces) {        
             _current = start;
@@ -114,7 +119,6 @@ inline int TArray<T>::insert(const T& value) {
         }
         free(_data);
         _data = newData;
-       // delete(newData);
         newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
     }
     new (_data + _size) T(value); //вызывается конструктор по умолчанию
@@ -136,7 +140,6 @@ inline int TArray<T>::insert(int index, const T& value) {
             }
             free(_data);
             _data = newData;
-           // delete(newData);
             newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
         }
         _size++;
