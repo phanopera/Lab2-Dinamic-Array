@@ -8,29 +8,103 @@ template<typename T>
 class TArray final{
 
     class Iterator {
-       // iterator();
-       // reverseIterator();
+    protected:
+        T* _start;
+        T* _current;
+        TArray<T>* mas;
+        bool isReverces;
+    public:
+        iterator(TArray<T>* mas, T* start, bool isReverces) {
+            _current = start;
+            _start = start;
+            _mas = mas;
+            this->isReverces= isReverces;
+
+        }
+        //reverseIterator();
+
+        T& operator++ (int) { return *_current++; }
+        T& operator-- (int) { return *_current--; }
+        T& operator++ () { return *++_current; }
+        T& operator-- () { return *--_current; }
+        T& operator* () { return *_current; }
+
+        //получение в текущей позиции
+        const T& get() const {
+            return *_current;
+        }
+        //вставка в текущей позиции
+        void set(const T& value) {
+            *_current = value;
+        }
+        //++ к текущей позиции
+        void next() {
+            if (isReverces) {
+                _current--;
+            }
+            else {
+                _current++;
+            }
+        }
+
+        //проверка наличия еще одного элемента дальше
+        bool hasNext() const {
+            if (isReverces)//
+            {
+                if (_current == _mas->_start +_size) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            else
+            {
+                //if (_current == end - 1) {
+                if (_current == _start - _mas->_size) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+        }
+
+
     };
-    class ConstIterator:public Iterator {
-     //  iterator() const;
-      //  reverseIterator() const;
+    class ConstIterator :public Iterator {
+        iterator(TArray<T>* mas, T* start, bool isReverces) const{
+            _current = start;
+            _start = start;
+            _mas = mas;
+            this->isReverces = isReverces;
+
+        }
     };
 public:
-    TArray();
+
     TArray(int capacity);
-
-
+    TArray();
+   
     int insert(const T& value);
     int insert(int index, const T& value);
     void remove(int index);
     const T& operator[](int index) const;
     T& operator[](int index);
     int size() const;
-    Iterator iterator();
-    ConstIterator iterator() const;
-    Iterator reverseIterator();
-    ConstIterator reverseIterator() const;
     ~TArray();
+    Iterator iterator() {
+        return iterator(_data, this, false);
+    };
+    Iterator reverseIterator() {
+        return iterator(_data + _size - 1, this, true);
+    };
+    ConstIterator iterator() const{
+        return iterator(_data, this, false);
+    };
+    ConstIterator reverseIterator() const {
+        return iterator(_data + _size - 1, this, true);
+    };
 private:
 
     const int capacityDefault = 8; //или 16
@@ -48,7 +122,7 @@ inline TArray<T>::TArray() {
     _size = 0;
     _data = (T*)malloc(sizeof(T*) * _capacity); //выделение памяти под массив, узнав размер массива 
 }
-//выделение памяти дефолт 
+//выделение памяти дефолт под размер
 template<typename T>
 inline TArray<T>::TArray(int capacity) {
     _capacity = capacity;
