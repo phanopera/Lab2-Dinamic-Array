@@ -45,6 +45,14 @@ class TArray final{
             this->isReverces= isReverces;
         }
         void set(const T& value) = delete;
+        
+        T& operator++ (int) { return *_current++; }
+        T& operator-- (int) { return *_current--; }
+        T& operator++ () { return *++_current; }
+        T& operator-- () { return *--_current; }
+        T& operator* () { return *_current; }
+        void next();
+        bool hasNext() const;
     };
 public:
 
