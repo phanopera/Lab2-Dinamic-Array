@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 
+
+
 template<typename T>
 class TArray final{
 
@@ -31,34 +33,38 @@ class TArray final{
        
 
     };
-    class ConstIterator {
+    class ConstIterator{
     protected:
         T* _start;
         T* _current;
         TArray<T>* _mas;
         bool isReverces;
     public:
-        ConstIterator(TArray<T>* mas, T* start, bool isReverces) {        
+        ConstIterator(TArray<T>* mas, T* start, bool isReverces){
             _current = start;
             _start = start;
             _mas = mas;
-            this->isReverces= isReverces;
+            this->isReverces = isReverces;        
         }
         void set(const T& value) = delete;
-        
+
         T& operator++ (int) { return *_current++; }
         T& operator-- (int) { return *_current--; }
         T& operator++ () { return *++_current; }
         T& operator-- () { return *--_current; }
         T& operator* () { return *_current; }
-        void next();
+        void next() const;
         bool hasNext() const;
     };
 public:
 
     TArray(int capacity);
     TArray();
-   
+    TArray(const TArray& a);
+    TArray& operator =(TArray a);
+    void swap(TArray& a);
+    TArray(TArray&& a);
+
     int insert(const T& value);
     int insert(int index, const T& value);
     void remove(int index);
@@ -104,6 +110,49 @@ inline TArray<T>::TArray(int capacity) {
     
 }
 
+//копирующий конструктор
+template<typename T> 
+inline TArray<T>::TArray(const TArray& a)
+{
+    __size = a._size;
+    _capacity = a._capacity;
+
+    _data = (T*)malloc(sizeof(T) * _capacity);
+
+    for (int i = 0; i < _size; ++i)
+    {
+        new (_data + i) T(a._data[i]);
+    }
+}
+
+//присваивающий
+template<typename T> 
+inline TArray<T>& TArray<T>::operator=(TArray<T> a)
+{
+    swap(a);
+    return *this;
+}
+//swap
+template<typename T> 
+inline void TArray<T>::swap(TArray& a)
+{
+    std::swap(_data, a._data);
+    std::swap(_size, a._size);
+    std::swap(_capacity, a._capacity);
+}
+//перемещ
+template<typename T> 
+inline TArray<T>::TArray(TArray&& a)
+{
+    _data = a._data;
+    _size = a._size;
+    _capacity = a._capacity;
+
+    a._data = nullptr;
+    a._size = 0;
+    a._capacity = 0;
+}
+
 //деструктор
 template<typename T>
 inline TArray<T>::~TArray() {
@@ -127,6 +176,7 @@ inline int TArray<T>::insert(const T& value) {
         }
         free(_data);
         _data = newData;
+        newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
     }
     new (_data + _size) T(value); //вызывается конструктор по умолчанию
         _size++;
@@ -147,6 +197,7 @@ inline int TArray<T>::insert(int index, const T& value) {
             }
             free(_data);
             _data = newData;
+            newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
         }
         _size++;
         for (int i = _size-1; i > index; i--) {//перенос объектов до index
@@ -163,11 +214,11 @@ inline int TArray<T>::insert(int index, const T& value) {
 template<typename T>
 inline void TArray<T>::remove(int index) {
     if (index >= 0 || index < _size) {
+       // _data[index].~T();
 
         for (int i = index; i < _size-1; i++) {//перенос объектов от index
-             new (_data + i) T(std::move(_data[i + 1])); //вызывается конструктор, копирующмй элементы 
+            new (_data + i) T(std::move(_data[i + 1])); //вызывается конструктор, копирующмй элементы   
             _data[i+1].~T();
-             
         }
         _size--;
     }
@@ -234,6 +285,39 @@ inline bool TArray<T>::Iterator::hasNext() const {
     else
     {
         if (_current == _mas->_size+_start) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+}
+//++ к текущей позиции
+template<typename T>
+inline void TArray<T>::ConstIterator::next() const{
+    if (isReverces) {
+        _current--;
+    }
+    else {
+        _current++;
+    }
+}
+
+//проверка наличия еще одного элемента дальше
+template<typename T>
+inline bool TArray<T>::ConstIterator::hasNext() const {
+    if (isReverces)//
+    {
+        if (_current == _start - _mas->_size) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    else
+    {
+        if (_current == _mas->_size + _start) {
             return false;
         }
         else {
