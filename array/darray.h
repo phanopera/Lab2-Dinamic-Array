@@ -119,7 +119,6 @@ inline int TArray<T>::insert(const T& value) {
         }
         free(_data);
         _data = newData;
-        newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
     }
     new (_data + _size) T(value); //вызывается конструктор по умолчанию
         _size++;
@@ -140,7 +139,6 @@ inline int TArray<T>::insert(int index, const T& value) {
             }
             free(_data);
             _data = newData;
-            newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
         }
         _size++;
         for (int i = _size-1; i > index; i--) {//перенос объектов до index
