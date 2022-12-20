@@ -163,11 +163,11 @@ inline int TArray<T>::insert(int index, const T& value) {
 template<typename T>
 inline void TArray<T>::remove(int index) {
     if (index >= 0 || index < _size) {
-        _data[index].~T();
 
         for (int i = index; i < _size-1; i++) {//перенос объектов от index
-            _data[i].~T();
-            new (_data + i) T(std::move(_data[i + 1])); //вызывается конструктор, копирующмй элементы   
+             new (_data + i) T(std::move(_data[i + 1])); //вызывается конструктор, копирующмй элементы 
+            _data[i+1].~T();
+             
         }
         _size--;
     }
