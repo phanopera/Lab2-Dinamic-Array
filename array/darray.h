@@ -33,7 +33,12 @@ class TArray final{
     };
     class ConstIterator :public Iterator {
     public:
-        ConstIterator(TArray<T>* mas, T* start, bool isReverces) : Iterator(mas, start, isReverces) {}
+        ConstIterator(TArray<T>* mas, T* start, bool isReverces) {        
+            _current = start;
+            _start = start;
+            _mas = mas;
+            this->isReverces= isReverces;
+        }
         void set(const T& value) = delete;
     };
 public:
