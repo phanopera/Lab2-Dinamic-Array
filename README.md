@@ -7,7 +7,7 @@ class Array final
 АДТ поддерживает следующие операции:
 
 Конструктор
-
+~
 Array();
 Array(int capacity);
 Деструктор
