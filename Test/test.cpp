@@ -6,8 +6,8 @@ TEST(TestCaseName, TestName) {
   EXPECT_EQ(1, 1);
   EXPECT_TRUE(true);
 }
-//сверх быстрая мегасортиров очка
-TEST(TestTArrayInt, TestDefaultConstructor)
+//инты
+TEST(TestTArrayInt, TestDefault)
 {
     TArray<int> a;
     EXPECT_EQ(a.size(), 0);
@@ -15,13 +15,13 @@ TEST(TestTArrayInt, TestDefaultConstructor)
 }
 
 
-TEST(TestTArrayInt, TestCapacityConstructor)
+TEST(TestTArrayInt, TestCapacity)
 {
     TArray<int> a { 10 };
     EXPECT_EQ(a.size(), 0);
     EXPECT_EQ(a.capacity(), 10);
 }
-TEST(TestTArrayInt, TestMoveConstructor)
+TEST(TestTArrayInt, TestMove)
 {
     TArray<int> a;
     for (int i = 0; i < 15; ++i)
@@ -49,7 +49,7 @@ TEST(TestTArrayInt, TestInsert)
     EXPECT_EQ(a.size(), 5);
     EXPECT_EQ(a.capacity(), 8);
 }
-TEST(TestTArrayInt, TestIndexedInsert)
+TEST(TestTArrayInt, TestIInsert)
 {
     TArray<int> a;
     for (int i = 0; i < 20; ++i)
@@ -79,21 +79,22 @@ TEST(TestTArrayInt, TestRemove)
     EXPECT_EQ(a[0], 2);
     EXPECT_EQ(a.capacity(), 8);
 }
-TEST(TestTArrayString, TestDefaultConstructor)
+
+
+//строки
+TEST(TestTArrayString, TestDefault)
 {
     TArray<std::string> a;
     EXPECT_EQ(a.size(), 0);
     EXPECT_EQ(a.capacity(), 8);
 }
-
-
-TEST(TestTArrayString, TestCapacityConstructor)
+TEST(TestTArrayString, TestCapacity)
 {
     TArray<std::string> a { 10 };
     EXPECT_EQ(a.size(), 0);
     EXPECT_EQ(a.capacity(), 10);
 }
-TEST(TestTArrayString, TestMoveConstructor)
+TEST(TestTArrayString, TestMove)
 {
     TArray<std::string> a;
     for (int i = 0; i < 20; ++i)
@@ -119,6 +120,21 @@ TEST(TestTArrayString, TestInsert)
 
     EXPECT_EQ(a.size(), 5);
     EXPECT_EQ(a.capacity(), 8);
+}
+TEST(TestTArrayInt, TestIInsert)
+{
+    TArray<int> a;
+    for (int i = 0; i < 20; ++i)
+    {
+        a.insert(i + 1);
+    }
+
+    EXPECT_NO_THROW(a.insert(0,0));
+    EXPECT_NO_THROW(a.insert(10, 0));
+    EXPECT_NO_THROW(a.insert(22, 0));
+
+    EXPECT_EQ(a.size(), 23);
+    EXPECT_EQ(a.capacity(), 32);
 }
 TEST(TestTArrayString, TestRemove)
 {
