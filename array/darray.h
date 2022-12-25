@@ -16,12 +16,12 @@ class TArray final{
             this->isReverces= isReverces;
         }
 
-        T& operator++ (int) { return *_current++; }
-        T& operator-- (int) { return *_current--; }
-        T& operator++ () { return *++_current; }
-        T& operator-- () { return *--_current; }
+        T& operator++ (int) { return _current++; }
+        T& operator-- (int) { return _current--; }
+        T& operator++ () { return ++_current; }
+        T& operator-- () { return --_current; }
         T& operator* () { return *_current; }
-
+        
         const T& get() const;
         void set(const T& value);
         void next();
@@ -44,10 +44,10 @@ class TArray final{
         }
         void set(const T& value) = delete;
 
-        T& operator++ (int) { return *_current++; }
-        T& operator-- (int) { return *_current--; }
-        T& operator++ () { return *++_current; }
-        T& operator-- () { return *--_current; }
+        T& operator++ (int) { return _current++; }
+        T& operator-- (int) { return _current--; }
+        T& operator++ () { return ++_current; }
+        T& operator-- () { return --_current; }
         T& operator* () { return *_current; }
         void next() const;
         bool hasNext() const;
