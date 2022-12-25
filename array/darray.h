@@ -110,7 +110,7 @@ inline TArray<T>::TArray(int capacity) {
 template<typename T> 
 inline TArray<T>::TArray(const TArray& a)
 {
-    __size = a._size;
+    _size = a._size;
     _capacity = a._capacity;
 
     _data = (T*)malloc(sizeof(T) * _capacity);
