@@ -1,26 +1,18 @@
 #include "pch.h"
-#include "../array/darray.h"
+#include "../darray/Header.h"
 #include <random>
 
 TEST(TestCaseName, TestName) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
+    EXPECT_EQ(1, 1);
+    EXPECT_TRUE(true);
 }
 //инты
 TEST(TestTArrayInt, TestDefault)
 {
     TArray<int> a;
     EXPECT_EQ(a.size(), 0);
-    EXPECT_EQ(a.capacity(), 8);
 }
 
-
-TEST(TestTArrayInt, TestCapacity)
-{
-    TArray<int> a { 10 };
-    EXPECT_EQ(a.size(), 0);
-    EXPECT_EQ(a.capacity(), 10);
-}
 TEST(TestTArrayInt, TestMove)
 {
     TArray<int> a;
@@ -34,7 +26,7 @@ TEST(TestTArrayInt, TestMove)
     for (int i = 0; i < 15; ++i)
     {
         EXPECT_NO_THROW(b[i]);
-        EXPECT_EQ(b[i], i+1);
+        EXPECT_EQ(b[i], i + 1);
     }
 }
 
@@ -47,7 +39,6 @@ TEST(TestTArrayInt, TestInsert)
     }
 
     EXPECT_EQ(a.size(), 5);
-    EXPECT_EQ(a.capacity(), 8);
 }
 TEST(TestTArrayInt, TestIInsert)
 {
@@ -57,12 +48,11 @@ TEST(TestTArrayInt, TestIInsert)
         a.insert(i + 1);
     }
 
-    EXPECT_NO_THROW(a.insert(0,0));
+    EXPECT_NO_THROW(a.insert(0, 0));
     EXPECT_NO_THROW(a.insert(10, 0));
     EXPECT_NO_THROW(a.insert(22, 0));
 
     EXPECT_EQ(a.size(), 23);
-    EXPECT_EQ(a.capacity(), 32);
 }
 
 TEST(TestTArrayInt, TestRemove)
@@ -77,7 +67,6 @@ TEST(TestTArrayInt, TestRemove)
 
     EXPECT_EQ(a.size(), 4);
     EXPECT_EQ(a[0], 2);
-    EXPECT_EQ(a.capacity(), 8);
 }
 
 
@@ -86,13 +75,6 @@ TEST(TestTArrayString, TestDefault)
 {
     TArray<std::string> a;
     EXPECT_EQ(a.size(), 0);
-    EXPECT_EQ(a.capacity(), 8);
-}
-TEST(TestTArrayString, TestCapacity)
-{
-    TArray<std::string> a { 10 };
-    EXPECT_EQ(a.size(), 0);
-    EXPECT_EQ(a.capacity(), 10);
 }
 TEST(TestTArrayString, TestMove)
 {
@@ -119,7 +101,6 @@ TEST(TestTArrayString, TestInsert)
     }
 
     EXPECT_EQ(a.size(), 5);
-    EXPECT_EQ(a.capacity(), 8);
 }
 TEST(TestTArrayInt, TestIInsert)
 {
@@ -129,12 +110,11 @@ TEST(TestTArrayInt, TestIInsert)
         a.insert(i + 1);
     }
 
-    EXPECT_NO_THROW(a.insert(0,0));
+    EXPECT_NO_THROW(a.insert(0, 0));
     EXPECT_NO_THROW(a.insert(10, 0));
     EXPECT_NO_THROW(a.insert(22, 0));
 
     EXPECT_EQ(a.size(), 23);
-    EXPECT_EQ(a.capacity(), 32);
 }
 TEST(TestTArrayString, TestRemove)
 {
@@ -148,5 +128,4 @@ TEST(TestTArrayString, TestRemove)
 
     EXPECT_EQ(a.size(), 4);
     EXPECT_EQ(a[0], "Loremipsumdolorsitametconsecteturadipiscingelit" + 1);
-    EXPECT_EQ(a.capacity(), 8);
 }
