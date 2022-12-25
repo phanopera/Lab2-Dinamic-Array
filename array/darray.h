@@ -4,7 +4,7 @@
 
 
 template<typename T>
-class TArray final{
+class TArray final {
 
     class Iterator {
     protected:
@@ -17,7 +17,7 @@ class TArray final{
             _current = start;
             _start = start;
             _mas = mas;
-            this->isReverces= isReverces;
+            this->isReverces = isReverces;
         }
 
         T& operator++ (int) { return *_current++; }
@@ -30,21 +30,21 @@ class TArray final{
         void set(const T& value);
         void next();
         bool hasNext() const;
-       
+
 
     };
-    class ConstIterator{
+    class ConstIterator {
     protected:
         T* _start;
         T* _current;
         TArray<T>* _mas;
         bool isReverces;
     public:
-        ConstIterator(TArray<T>* mas, T* start, bool isReverces){
+        ConstIterator(TArray<T>* mas, T* start, bool isReverces) {
             _current = start;
             _start = start;
             _mas = mas;
-            this->isReverces = isReverces;        
+            this->isReverces = isReverces;
         }
         void set(const T& value) = delete;
 
@@ -76,13 +76,13 @@ public:
         return Iterator(this, _data, false);
     };
     Iterator reverseIterator() {
-        return Iterator( this, _data + _size - 1, true);
+        return Iterator(this, _data + _size - 1, true);
     };
-    ConstIterator cIterator() const{
+    ConstIterator cIterator() const {
         return ConstIterator(this, _data, false);
     };
     ConstIterator cReverseIterator() const {
-        return ConstIterator(this,_data + _size - 1, true);
+        return ConstIterator(this, _data + _size - 1, true);
     };
 private:
 
@@ -107,14 +107,14 @@ inline TArray<T>::TArray(int capacity) {
     _capacity = capacity;
     _size = 0;
     _data = (T*)malloc(sizeof(T*) * _capacity); //выделение памяти под массив, согласно указанной вместимости, узнав размер массива
-    
+
 }
 
 //копирующий конструктор
-template<typename T> 
+template<typename T>
 inline TArray<T>::TArray(const TArray& a)
 {
-    __size = a._size;
+    _size = a._size;
     _capacity = a._capacity;
 
     _data = (T*)malloc(sizeof(T) * _capacity);
@@ -126,14 +126,14 @@ inline TArray<T>::TArray(const TArray& a)
 }
 
 //присваивающий
-template<typename T> 
+template<typename T>
 inline TArray<T>& TArray<T>::operator=(TArray<T> a)
 {
     swap(a);
     return *this;
 }
 //swap
-template<typename T> 
+template<typename T>
 inline void TArray<T>::swap(TArray& a)
 {
     std::swap(_data, a._data);
@@ -141,7 +141,7 @@ inline void TArray<T>::swap(TArray& a)
     std::swap(_capacity, a._capacity);
 }
 //перемещ
-template<typename T> 
+template<typename T>
 inline TArray<T>::TArray(TArray&& a)
 {
     _data = a._data;
@@ -165,7 +165,7 @@ inline TArray<T>::~TArray() {
 //выделение памяти, вставка
 template<typename T>
 inline int TArray<T>::insert(const T& value) {
-    if (_size == _capacity) { 
+    if (_size == _capacity) {
         _capacity = _capacity * capacityAdding;//увечичение веса ради вместимости
         T* newData = (T*)malloc(sizeof(T*) * _capacity); //выделение памяти под временный массив, узнав размер массива 
         for (int i = 0; i < _size; i++) {
@@ -179,8 +179,8 @@ inline int TArray<T>::insert(const T& value) {
         newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
     }
     new (_data + _size) T(value); //вызывается конструктор по умолчанию
-        _size++;
-        return _size - 1;
+    _size++;
+    return _size - 1;
 }
 //выделение памяти, вставка в место
 template<typename T>
@@ -200,9 +200,9 @@ inline int TArray<T>::insert(int index, const T& value) {
             newData = nullptr;//"Перед тем как закрывать дверь (присваивать указателю nullptr) не забывайте смывать (использовать delete), во избежание переполнения стока (стека)."
         }
         _size++;
-        for (int i = _size-1; i > index; i--) {//перенос объектов до index
-            new (_data + i) T(std::move(_data[i-1])); //вызывается конструктор, копирующмй элементы
-            _data[i-1].~T();
+        for (int i = _size - 1; i > index; i--) {//перенос объектов до index
+            new (_data + i) T(std::move(_data[i - 1])); //вызывается конструктор, копирующмй элементы
+            _data[i - 1].~T();
         }
         new(_data + index) T(value);
         return index;
@@ -214,11 +214,11 @@ inline int TArray<T>::insert(int index, const T& value) {
 template<typename T>
 inline void TArray<T>::remove(int index) {
     if (index >= 0 || index < _size) {
-       // _data[index].~T();
+        // _data[index].~T();
 
-        for (int i = index; i < _size-1; i++) {//перенос объектов от index
+        for (int i = index; i < _size - 1; i++) {//перенос объектов от index
             new (_data + i) T(std::move(_data[i + 1])); //вызывается конструктор, копирующмй элементы   
-            _data[i+1].~T();
+            _data[i + 1].~T();
         }
         _size--;
     }
@@ -284,7 +284,7 @@ inline bool TArray<T>::Iterator::hasNext() const {
     }
     else
     {
-        if (_current == _mas->_size+_start) {
+        if (_current == _mas->_size + _start) {
             return false;
         }
         else {
@@ -294,7 +294,7 @@ inline bool TArray<T>::Iterator::hasNext() const {
 }
 //++ к текущей позиции
 template<typename T>
-inline void TArray<T>::ConstIterator::next() const{
+inline void TArray<T>::ConstIterator::next() const {
     if (isReverces) {
         _current--;
     }
